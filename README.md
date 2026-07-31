@@ -16,14 +16,19 @@
 **Parte I - Introducción a Hilos en Java**
 
 1. De acuerdo con lo revisado en las lecturas, complete las clases CountThread, para que las mismas definan el ciclo de vida de un hilo que imprima por pantalla los números entre A y B.
-2. Complete el método __main__ de la clase CountMainThreads para que:
-	1. Cree 3 hilos de tipo CountThread, asignándole al primero el intervalo [0..99], al segundo [99..199], y al tercero [200..299].
-	2. Inicie los tres hilos con 'start()'.
-	3. Ejecute y revise la salida por pantalla. 
-	4. Cambie el inicio con 'start()' por 'run()'. Cómo cambia la salida?, por qué?.
-       		La salida cambia en el sentido que con start() se crea realmente el hilo por lo que las secuencias se encuentran intercaladas, se estan ejecutando al mismo tiempo. Por otro lado, cuando se ejecuta con el run()
-       		no se crea realmente el hilo por lo que se imprime secuencia por secuencia lo que hace que los números estén ordenados.
-   
+   2. Complete el método __main__ de la clase CountMainThreads para que:
+       1. Cree 3 hilos de tipo CountThread, asignándole al primero el intervalo [0..99], al segundo [99..199], y al tercero [200..299].
+       2. Inicie los tres hilos con 'start()'.
+       3. Ejecute y revise la salida por pantalla. 
+       4. Cambie el inicio con 'start()' por 'run()'. Cómo cambia la salida?, por qué?.
+                  La salida cambia en el sentido que con start() se crea realmente el hilo por lo que las secuencias se encuentran intercaladas, se estan ejecutando al mismo tiempo. Por otro lado, cuando se ejecuta con el run()
+                  no se crea realmente el hilo por lo que se imprime secuencia por secuencia lo que hace que los números estén ordenados.
+   			
+   		start():
+      	![img.png](img.png)
+   		run():
+   		![img_1.png](img_1.png)
+
 
 **Parte II - Ejercicio Black List Search**
 
