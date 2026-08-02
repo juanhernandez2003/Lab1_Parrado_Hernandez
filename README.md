@@ -27,11 +27,7 @@
           Con `run()` en cambio no se crea ningún hilo nuevo. Es como llamar a un método normal, así que el programa espera a que el primero termine para arrancar el segundo, y así. Por eso los números salen ordenados del 0 al 299, pero uno tras otro, sin que nada corra al mismo tiempo.
 
           En resumen: `start()` los lanza a todos a la vez y la salida sale mezclada. `run()` los ejecuta uno por uno y la salida sale ordenada.
-   			
-   		start():
-      	![img.png](img.png)
-   		run():
-   		![img_1.png](img_1.png)
+
 
 
 **Parte II - Ejercicio Black List Search**
