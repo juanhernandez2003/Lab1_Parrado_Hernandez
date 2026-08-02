@@ -21,8 +21,12 @@
        2. Inicie los tres hilos con 'start()'.
        3. Ejecute y revise la salida por pantalla. 
        4. Cambie el inicio con 'start()' por 'run()'. Cómo cambia la salida?, por qué?.
-                  La salida cambia en el sentido que con start() se crea realmente el hilo por lo que las secuencias se encuentran intercaladas, se estan ejecutando al mismo tiempo. Por otro lado, cuando se ejecuta con el run()
-                  no se crea realmente el hilo por lo que se imprime secuencia por secuencia lo que hace que los números estén ordenados.
+
+          Con `start()` los tres hilos arrancan al mismo tiempo y cada uno corre por su cuenta, por eso los números salen mezclados en la consola (ves el 0, luego el 99, luego el 200, sin un orden fijo). Eso es lo que se busca cuando se usan hilos: que trabajen todos a la vez.
+
+          Con `run()` en cambio no se crea ningún hilo nuevo. Es como llamar a un método normal, así que el programa espera a que el primero termine para arrancar el segundo, y así. Por eso los números salen ordenados del 0 al 299, pero uno tras otro, sin que nada corra al mismo tiempo.
+
+          En resumen: `start()` los lanza a todos a la vez y la salida sale mezclada. `run()` los ejecuta uno por uno y la salida sale ordenada.
    			
    		start():
       	![img.png](img.png)
