@@ -68,6 +68,9 @@ Para 'refactorizar' este código, y hacer que explote la capacidad multi-núcleo
 **Parte II.I Para discutir la próxima clase (NO para implementar aún)**
 
 La estrategia de paralelismo antes implementada es ineficiente en ciertos casos, pues la búsqueda se sigue realizando aún cuando los N hilos (en su conjunto) ya hayan encontrado el número mínimo de ocurrencias requeridas para reportar al servidor como malicioso. Cómo se podría modificar la implementación para minimizar el número de consultas en estos casos?, qué elemento nuevo traería esto al problema?
+    
+* Nosotros implementaríamos un contador global entre los hilos para poder determinar el momento en el que se llega al BLACK_LIST_ALARM_COUNT.
+* El elemento nuevo acaba con el concepto de "vergonzosamente paralelo" ya que ahora si hay una dependencia entre los hilos lo que trae un nuevo problema y por otro lado igualmente se pueden llegar a identificar mas de 5 ocurrencias si se llegan a reportar dos o mas simultaneamente.
 
 **Parte III - Evaluación de Desempeño**
 
