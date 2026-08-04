@@ -21,13 +21,13 @@
        2. Inicie los tres hilos con 'start()'.
        3. Ejecute y revise la salida por pantalla. 
        4. Cambie el inicio con 'start()' por 'run()'. Cómo cambia la salida?, por qué?.
-                  La salida cambia en el sentido que con start() se crea realmente el hilo por lo que las secuencias se encuentran intercaladas, se estan ejecutando al mismo tiempo. Por otro lado, cuando se ejecuta con el run()
-                  no se crea realmente el hilo por lo que se imprime secuencia por secuencia lo que hace que los números estén ordenados.
-   			
-   		start():
-      	![img.png](img.png)
-   		run():
-   		![img_1.png](img_1.png)
+
+          Con `start()` los tres hilos arrancan al mismo tiempo y cada uno corre por su cuenta, por eso los números salen mezclados en la consola (ves el 0, luego el 99, luego el 200, sin un orden fijo). Eso es lo que se busca cuando se usan hilos: que trabajen todos a la vez.
+
+          Con `run()` en cambio no se crea ningún hilo nuevo. Es como llamar a un método normal, así que el programa espera a que el primero termine para arrancar el segundo, y así. Por eso los números salen ordenados del 0 al 299, pero uno tras otro, sin que nada corra al mismo tiempo.
+
+          En resumen: `start()` los lanza a todos a la vez y la salida sale mezclada. `run()` los ejecuta uno por uno y la salida sale ordenada.
+
 
 
 **Parte II - Ejercicio Black List Search**
@@ -68,6 +68,9 @@ Para 'refactorizar' este código, y hacer que explote la capacidad multi-núcleo
 **Parte II.I Para discutir la próxima clase (NO para implementar aún)**
 
 La estrategia de paralelismo antes implementada es ineficiente en ciertos casos, pues la búsqueda se sigue realizando aún cuando los N hilos (en su conjunto) ya hayan encontrado el número mínimo de ocurrencias requeridas para reportar al servidor como malicioso. Cómo se podría modificar la implementación para minimizar el número de consultas en estos casos?, qué elemento nuevo traería esto al problema?
+    
+* Nosotros implementaríamos un contador global entre los hilos para poder determinar el momento en el que se llega al BLACK_LIST_ALARM_COUNT.
+* El elemento nuevo acaba con el concepto de "vergonzosamente paralelo" ya que ahora si hay una dependencia entre los hilos lo que trae un nuevo problema y por otro lado igualmente se pueden llegar a identificar mas de 5 ocurrencias si se llegan a reportar dos o mas simultaneamente.
 
 **Parte III - Evaluación de Desempeño**
 
