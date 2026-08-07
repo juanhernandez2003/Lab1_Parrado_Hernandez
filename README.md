@@ -91,10 +91,31 @@ Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tie
 1. Según la [ley de Amdahls](https://www.pugetsystems.com/labs/articles/Estimating-CPU-Performance-using-Amdahls-Law-619/#WhatisAmdahlsLaw?):
 
 	![](img/ahmdahls.png), donde _S(n)_ es el mejoramiento teórico del desempeño, _P_ la fracción paralelizable del algoritmo, y _n_ el número de hilos, a mayor _n_, mayor debería ser dicha mejora. Por qué el mejor desempeño no se logra con los 500 hilos?, cómo se compara este desempeño cuando se usan 200?. 
+    En nuestro caso el mejor rendimiento se logró con 500 hilos (331 ms). Esto se dió porque la Ley de Amdahl "piensa" en el número de procesadores dando por hecho que los hilos están "compitiendo" por la CPU. En nuestro caso despues de 1 ms cada consulta queda en estado sleep, en donde claramente un hilo en estado sleep no consume de la CPU.
+    Luego, en efecto si hay un empeoramiento en el rendimiento con los siguientes números 407 ms con 1.000 hilos, 415 ms con 2.000 y 756 ms con 5.000.
+    En conclusión, llega un punto en que crear y administrar los hilos cuesta más que el trabajo que van a hacer.
 
 2. Cómo se comporta la solución usando tantos hilos de procesamiento como núcleos comparado con el resultado de usar el doble de éste?.
 
-3. De acuerdo con lo anterior, si para este problema en lugar de 100 hilos en una sola CPU se pudiera usar 1 hilo en cada una de 100 máquinas hipotéticas, la ley de Amdahls se aplicaría mejor?. Si en lugar de esto se usaran c hilos en 100/c máquinas distribuidas (siendo c es el número de núcleos de dichas máquinas), se mejoraría?. Explique su respuesta.
+   Con 16 hilos tardó 7.831 ms y con 32 tardó 3.952 ms. Se demoró exactamente la mitad.
+   Eso no debería pasar si el trabajo fuera de CPU: con 16 núcleos, pasar a 32 hilos no debería mejorar casi nada. Mejoró porque, otra vez, los hilos están dormidos. Cuando uno se duerme deja el núcleo libre y otro entra a usarlo. Nunca se estorban. El costo de cada consulta fue 1,57 ms con 16 hilos y 1,58 ms con 32. Igualito. Si se estuvieran peleando el procesador, ese número habría subido.
 
+3. De acuerdo con lo anterior, si para este problema en lugar de 100 hilos en una sola CPU se pudiera usar 1 hilo en cada una de 100 máquinas hipotéticas, la ley de Amdahls se aplicaría mejor?. Si en lugar de esto se usaran c hilos en 100/c máquinas distribuidas (siendo c es el número de núcleos de dichas máquinas), se mejoraría?. Explique su respuesta.
+   Con 1 hilo en cada una de 100 máquinas sí se cumpliría mejor la teoría, porque ahí sí habría 100 procesadores de verdad y no 100 hilos repartiéndose 16 núcleos.
+   Con varios hilos en menos máquinas sí mejoraría, ya que repartir trabajo entre hilos de la misma máquina es barato, porque comparten memoria y no hay red de por medio. Repartirlo entre máquinas es caro. Entonces conviene exprimir cada máquina al máximo y usar las menos máquinas posibles.
+
+**Evidencias de trabajo**
+
+![img_3.png](img_3.png)
+Estado base antes de la carga (18 hilos): Proceso Apache Maven (pid 15144) durante el periodo de espera previo a la carga. La JVM tiene 18 hilos vivos.
+
+![img_4.png](img_4.png)
+Inicio de la carga con 100 hilos (03:40:15): El conteo sube a 118 hilos vivos: los 100 hilos BlackListThread creados por checkHost más los 18 de infraestructura. La numeración va de Thread-1 a Thread-101, correspondiente a la primera vuelta de búsqueda. La columna Running marca 0 ms (0%) en todas las filas.
+
+![img_5.png](img_5.png)
+Misma corrida 20 segundos después. El conteo de hilos vivos se mantiene en 118, pero la numeración ya va por Thread-254 a Thread-270. Cada vuelta de búsqueda crea 100 hilos nuevos y los descarta al terminar, en lugar de reutilizarlos.
+
+![img_7.png](img_7.png)
+La numeración alcanza Thread-385 a Thread-401 manteniendo los mismos ~118 hilos vivos. En 35 segundos se crearon y destruyeron cerca de 400 hilos. Este costo de creación y destrucción es el que domina el tiempo de ejecución en las configuraciones de miles de hilos (analizado Parte IV).
 
 
